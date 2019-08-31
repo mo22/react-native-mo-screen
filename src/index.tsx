@@ -6,6 +6,11 @@ import * as android from './android';
 
 
 export class Screen {
+  /**
+   * proximity subscription. subscribe to get feedback calls about the state of
+   * the proximity sensor.
+   * please note that on IOS this will also darken the screen on proximity.
+   */
   public static readonly proximity = new StatefulEvent<boolean>(false, (emit) => {
     if (ios.Events) {
       ios.Module!.enableProximityMonitoring(true);
@@ -119,7 +124,10 @@ export class Screen {
 
 
 
-export class ScreenOnLock extends React.PureComponent<{}> {
+/**
+ * will hold a screen on lock while mounted
+ */
+export class ScreenOnLock extends React.PureComponent<{ children: never; }> {
   private lock?: Releaseable;
 
   public componentDidMount() {
@@ -140,7 +148,10 @@ export class ScreenOnLock extends React.PureComponent<{}> {
 
 
 
-export class ProximityScreenOffLock extends React.PureComponent<{}> {
+/**
+ * will hold a screen off on proximity lock while mounted
+ */
+export class ProximityScreenOffLock extends React.PureComponent<{ children: never; }> {
   private lock?: Releaseable;
 
   public componentDidMount() {

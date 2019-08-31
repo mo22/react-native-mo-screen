@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { StatefulEvent, Releaseable } from 'mo-core';
 export declare class Screen {
+    /**
+     * proximity subscription. subscribe to get feedback calls about the state of
+     * the proximity sensor.
+     * please note that on IOS this will also darken the screen on proximity.
+     */
     static readonly proximity: StatefulEvent<boolean>;
     private static screenOnCounter;
     /**
@@ -24,13 +29,23 @@ export declare class Screen {
      */
     static setScreenBrightness(value: number): void;
 }
-export declare class ScreenOnLock extends React.PureComponent<{}> {
+/**
+ * will hold a screen on lock while mounted
+ */
+export declare class ScreenOnLock extends React.PureComponent<{
+    children: never;
+}> {
     private lock?;
     componentDidMount(): void;
     componentWillUnmount(): void;
     render(): null;
 }
-export declare class ProximityScreenOffLock extends React.PureComponent<{}> {
+/**
+ * will hold a screen off on proximity lock while mounted
+ */
+export declare class ProximityScreenOffLock extends React.PureComponent<{
+    children: never;
+}> {
     private lock?;
     componentDidMount(): void;
     componentWillUnmount(): void;
