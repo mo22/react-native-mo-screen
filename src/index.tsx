@@ -32,6 +32,11 @@ export class Screen {
   });
 
   private static screenOnCounter = 0;
+
+  /**
+   * start screen on lock. the screen wont get dark after idle time.
+   * returns Releasable, call result.release() to release the lock.
+   */
   public static pushScreenOn(): Releaseable {
     if (this.screenOnCounter === 0) {
       if (ios.Module) {
@@ -55,6 +60,9 @@ export class Screen {
     };
   }
 
+  /**
+   * run async function callback with screen on lock held.
+   */
   public static async runWithScreenOn<T>(callback: () => Promise<T>): Promise<T> {
     const v = this.pushScreenOn();
     try {
@@ -66,6 +74,11 @@ export class Screen {
 
   private static proximityScreenOffCounter = 0;
   private static proximityScreenOffSubscription?: Releaseable;
+
+  /**
+   * obtain proximity screen off lock. while this is held, the screen will go
+   * dark on proximity. call result.release() to release lock.
+   */
   public static pushProximityScreenOff(): Releaseable {
     if (this.proximityScreenOffCounter === 0) {
       if (ios.Module) {
@@ -92,6 +105,9 @@ export class Screen {
     };
   }
 
+  /**
+   * set screen brightness to value between 0 and 1.
+   */
   public static setScreenBrightness(value: number) {
     if (ios.Module) {
       ios.Module.setScreenBrightness(value);
