@@ -27,7 +27,7 @@ public class ReactNativeMoScreen extends ReactContextBaseJavaModule {
             WritableMap args = Arguments.createMap();
             args.putDouble("distance", sensorEvent.values[0]);
             args.putBoolean("proximity", sensorEvent.values[0] < sensorEvent.sensor.getMaximumRange());
-            getReactApplicationContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("ReactNativeMoLayoutScreenProximity", args);
+            getReactApplicationContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("ReactNativeMoScreenProximity", args);
         }
         @Override
         public void onAccuracyChanged(Sensor sensor, int i) {

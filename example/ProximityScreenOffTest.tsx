@@ -5,30 +5,50 @@ import { ListItem } from 'react-native-elements';
 import { ProximityScreenOffLock, Screen } from 'react-native-mo-screen';
 import { Releaseable } from 'mo-core';
 
-export default class ProximityScreenOffTest extends React.PureComponent<NavigationInjectedProps> {
-  public state = {
-    log: [] as string[],
+// @TODO: react-mo-core?
+function releaseOnUnmount(self: React.Component, sub: Releaseable) {
+  const prev = self.componentWillUnmount ? self.componentWillUnmount.bind(self) : undefined;
+  self.componentWillUnmount = () => {
+    sub.release();
+    if (prev) prev();
+  };
+}
+
+// @TODO: react-mo-core?
+function SafeSetState<S>(self: React.Component<any, S>) {
+  return (arg: Pick<S, keyof S>) => {
+    // only if mounted
+    self.setState(arg);
+  };
+}
+
+export default class ProximityScreenOffTest extends React.PureComponent<NavigationInjectedProps, { log: string[] }> {
+  public state: { log: string[] } = {
+    log: [],
   };
 
-  private sub?: Releaseable;
+  private safeSetState = SafeSetState(this);
 
   public componentDidMount() {
-    this.sub = Screen.proximity.subscribe((proxmity) => {
-      console.log('got proximity info!');
+    const sub = Screen.proximity.subscribe((proxmity) => {
+      console.log('got proximity info ' + proxmity);
       this.state.log = this.state.log.slice(0, 9);
       this.state.log.push('proximity is ' + proxmity + ' at ' + new Date());
       this.forceUpdate();
     });
+    releaseOnUnmount(this, sub);
   }
 
   public componentWillUnmount() {
-    if (this.sub) {
-      this.sub.release();
-      this.sub = undefined;
-    }
+    console.log('real unmount');
+    // if (this.sub) {
+    //   this.sub.release();
+    //   this.sub = undefined;
+    // }
   }
 
   public render() {
+    console.log('render');
     return (
       <React.Fragment>
         <ProximityScreenOffLock />
