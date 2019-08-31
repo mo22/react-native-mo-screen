@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
+import { ListItem } from 'react-native-elements';
 import { Screen } from 'react-native-mo-screen';
 
 export default class BrightnessTest extends React.PureComponent<NavigationInjectedProps> {

@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { NavigationInjectedProps } from 'react-navigation';
+import { ListItem } from 'react-native-elements';
 import { ScreenOnLock } from 'react-native-mo-screen';
 
 export default class ScreenOnTest extends React.PureComponent<NavigationInjectedProps> {
@@ -8,8 +9,13 @@ export default class ScreenOnTest extends React.PureComponent<NavigationInjected
     return (
       <React.Fragment>
         <ScreenOnLock />
-        <View>
-        </View>
+        <ScrollView>
+
+          <ListItem
+            title="Your Screen should stay on"
+          />
+
+        </ScrollView>
       </React.Fragment>
     );
   }
