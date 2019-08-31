@@ -1,18 +1,13 @@
 import * as React from 'react';
+import { StatefulEvent, Releaseable } from 'mo-core';
 export declare class Screen {
-    static readonly proximity: any;
-    private static proximitySubscription?;
-    private static proximitySubscribe;
+    static readonly proximity: StatefulEvent<boolean>;
     private static screenOnCounter;
-    static pushScreenOn(): {
-        remove: () => void;
-    };
+    static pushScreenOn(): Releaseable;
     static runWithScreenOn<T>(callback: () => Promise<T>): Promise<T>;
     private static proximityScreenOffCounter;
     private static proximityScreenOffSubscription?;
-    static pushProximityScreenOff(): {
-        remove: () => void;
-    };
+    static pushProximityScreenOff(): Releaseable;
 }
 export declare class ScreenOnLock extends React.PureComponent<{}> {
     private lock?;
