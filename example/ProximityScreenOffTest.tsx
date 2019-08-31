@@ -6,19 +6,29 @@ import { ProximityScreenOffLock, Screen } from 'react-native-mo-screen';
 import { Releaseable } from 'mo-core';
 
 // @TODO: react-mo-core?
-function releaseOnUnmount(self: React.Component, sub: Releaseable) {
+export function onWillUnmount(self: React.Component, callback: () => void) {
   const prev = self.componentWillUnmount ? self.componentWillUnmount.bind(self) : undefined;
   self.componentWillUnmount = () => {
-    sub.release();
     if (prev) prev();
+    callback();
   };
 }
 
 // @TODO: react-mo-core?
-function SafeSetState<S>(self: React.Component<any, S>) {
+export function releaseOnWillUnmount(self: React.Component, sub: Releaseable) {
+  onWillUnmount(self, () => sub.release());
+}
+
+// @TODO: react-mo-core?
+export function SafeSetState<S>(self: React.Component<any, S>) {
+  let mounted = true;
+  onWillUnmount(self, () => {
+    mounted = false;
+  });
   return (arg: Pick<S, keyof S>) => {
-    // only if mounted
-    self.setState(arg);
+    if (mounted) {
+      self.setState(arg);
+    }
   };
 }
 
@@ -36,7 +46,8 @@ export default class ProximityScreenOffTest extends React.PureComponent<Navigati
       this.state.log.push('proximity is ' + proxmity + ' at ' + new Date());
       this.forceUpdate();
     });
-    releaseOnUnmount(this, sub);
+    releaseOnWillUnmount(this, sub);
+    this.safeSetState({ log: ['initial'] });
   }
 
   public componentWillUnmount() {
@@ -45,6 +56,12 @@ export default class ProximityScreenOffTest extends React.PureComponent<Navigati
     //   this.sub.release();
     //   this.sub = undefined;
     // }
+    setTimeout(() => {
+      this.safeSetState({ log: ['after'] });
+    }, 1000);
+    setTimeout(() => {
+      this.setState({ log: ['after2'] });
+    }, 2000);
   }
 
   public render() {
