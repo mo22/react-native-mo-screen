@@ -1,12 +1,10 @@
 import { NativeModules, NativeEventEmitter, EmitterSubscription, Platform } from 'react-native';
 
 export interface Module {
-  // startMonitoringProximity(): void;
-  // stopMonitoringProximity(): void;
   setKeepScreenOn(value: boolean): void;
   setWindowFlags(flag: number, value: boolean): void;
   setProximityScreenOff(value: boolean): void;
-  enableProximityMonitoring(enable: boolean): void;
+  enableProximityEvent(enable: boolean): void;
 }
 
 export interface ProximityEvent {

@@ -3,7 +3,7 @@ export interface Module {
     setKeepScreenOn(value: boolean): void;
     setWindowFlags(flag: number, value: boolean): void;
     setProximityScreenOff(value: boolean): void;
-    enableProximityMonitoring(enable: boolean): void;
+    enableProximityEvent(enable: boolean): void;
 }
 export interface ProximityEvent {
     proximity: boolean;

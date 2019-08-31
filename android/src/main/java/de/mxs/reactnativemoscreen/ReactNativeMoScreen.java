@@ -1,14 +1,16 @@
-package de.mxs.reactnativemoorientation;
+package de.mxs.reactnativemoscreen;
 
 import android.app.Activity;
-import android.content.ComponentCallbacks;
 import android.content.Context;
-import android.content.res.Configuration;
-import android.view.Display;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.Build;
+import android.os.PowerManager;
 import android.view.WindowManager;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -17,63 +19,98 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import javax.annotation.Nonnull;
 
-public class ReactNativeMoOrientation extends ReactContextBaseJavaModule {
+public class ReactNativeMoScreen extends ReactContextBaseJavaModule {
 
-    private ComponentCallbacks componentCallbacks = new ComponentCallbacks() {
+    private SensorEventListener proximityListener = new SensorEventListener() {
         @Override
-        public void onConfigurationChanged(Configuration newConfig) {
-            final WindowManager windowManager = (WindowManager)getReactApplicationContext().getSystemService(Context.WINDOW_SERVICE);
-            if (windowManager == null) throw new RuntimeException("windowManager null");
-            final Display display = windowManager.getDefaultDisplay();
+        public void onSensorChanged(SensorEvent sensorEvent) {
             WritableMap args = Arguments.createMap();
-            args.putInt("orientation", display.getRotation());
-            getReactApplicationContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("ReactNativeMoOrientation", args);
+            args.putDouble("distance", sensorEvent.values[0]);
+            args.putBoolean("proximity", sensorEvent.values[0] < sensorEvent.sensor.getMaximumRange());
+            getReactApplicationContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("ReactNativeMoLayoutScreenProximity", args);
         }
         @Override
-        public void onLowMemory() {
+        public void onAccuracyChanged(Sensor sensor, int i) {
         }
     };
 
-    ReactNativeMoOrientation(@Nonnull ReactApplicationContext reactContext) {
+    private PowerManager.WakeLock proximityScreenOffLock;
+
+    ReactNativeMoScreen(@Nonnull ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
     @Override
     public @Nonnull
     String getName() {
-        return "ReactNativeMoOrientation";
+        return "ReactNativeMoScreen";
     }
 
     @Override
     public void onCatalystInstanceDestroy() {
-        enableOrientationEvent(false);
+        enableProximityEvent(false);
         super.onCatalystInstanceDestroy();
     }
 
-    @SuppressWarnings({"unused", "WeakerAccess"})
+    @SuppressWarnings({"WeakerAccess"})
     @ReactMethod
-    public void enableOrientationEvent(boolean enable) {
-        getReactApplicationContext().unregisterComponentCallbacks(componentCallbacks);
+    public void enableProximityEvent(boolean enable) {
+        SensorManager sensorManager = (SensorManager)getReactApplicationContext().getSystemService(Context.SENSOR_SERVICE);
+        if (sensorManager == null) throw new RuntimeException("sensorManager null");
+        sensorManager.unregisterListener(proximityListener);
         if (enable) {
-            getReactApplicationContext().registerComponentCallbacks(componentCallbacks);
+            Sensor proximity = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+            sensorManager.registerListener(proximityListener, proximity, SensorManager.SENSOR_DELAY_NORMAL);
         }
     }
 
     @SuppressWarnings("unused")
     @ReactMethod
-    public void setRequestedOrientation(int orientation) {
-        final Activity activity = getCurrentActivity();
-        if (activity == null) return;
-        activity.setRequestedOrientation(orientation);
+    public void setProximityScreenOff(boolean value) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            PowerManager powerManager = (PowerManager) getReactApplicationContext().getSystemService(Context.POWER_SERVICE);
+            if (powerManager == null) throw new RuntimeException("powerManager null");
+            if (value) {
+                if (proximityScreenOffLock == null) {
+                    proximityScreenOffLock = powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "RNMoLayout:proximityScreenOff");
+                    if (proximityScreenOffLock != null) {
+                        proximityScreenOffLock.acquire(1000 * 60 * 60 * 8);
+                    }
+                }
+            } else {
+                if (proximityScreenOffLock != null) {
+                    proximityScreenOffLock.release();
+                    proximityScreenOffLock = null;
+                }
+            }
+        }
     }
 
     @SuppressWarnings("unused")
     @ReactMethod
-    public void getOrientation(Promise promise) {
-        final WindowManager windowManager = (WindowManager)getReactApplicationContext().getSystemService(Context.WINDOW_SERVICE);
-        if (windowManager == null) throw new RuntimeException("windowManager null");
-        final Display display = windowManager.getDefaultDisplay();
-        promise.resolve(display.getRotation());
+    public void setKeepScreenOn(final boolean value) {
+        final Activity activity = getCurrentActivity();
+        if (activity == null) return;
+        activity.runOnUiThread(() -> {
+            if (value) {
+                activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            } else {
+                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            }
+        });
     }
 
+    @SuppressWarnings("unused")
+    @ReactMethod
+    public void setWindowFlags(final int flag, final boolean value) {
+        final Activity activity = getCurrentActivity();
+        if (activity == null) return;
+        activity.runOnUiThread(() -> {
+            if (value) {
+                activity.getWindow().addFlags(flag);
+            } else {
+                activity.getWindow().clearFlags(flag);
+            }
+        });
+    }
 }

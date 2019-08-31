@@ -1,4 +1,4 @@
-package de.mxs.reactnativemoorientation;
+package de.mxs.reactnativemoscreen;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-public final class ReactNativeMoOrientationPackage implements ReactPackage {
+public final class ReactNativeMoScreenPackage implements ReactPackage {
 
     @Override
     public @Nonnull List<ViewManager> createViewManagers(@Nonnull ReactApplicationContext reactContext) {
@@ -19,7 +19,7 @@ public final class ReactNativeMoOrientationPackage implements ReactPackage {
 
     @Override
     public @Nonnull List<NativeModule> createNativeModules(@Nonnull ReactApplicationContext reactContext) {
-        return Collections.singletonList(new ReactNativeMoOrientation(reactContext));
+        return Collections.singletonList(new ReactNativeMoScreen(reactContext));
     }
 
 }
