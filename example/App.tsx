@@ -9,16 +9,16 @@ const AppNavigator = createStackNavigator({
       title: 'Menu',
     },
   },
-  LockedOrientation: {
-    screen: require('./LockedOrientation').default,
+  ScreenOnTest: {
+    screen: require('./ScreenOnTest').default,
     navigationOptions: {
-      title: 'LockedOrientation',
+      title: 'ScreenOnTest',
     },
   },
-  SelectOrientation: {
-    screen: require('./SelectOrientation').default,
+  ProximityScreenOffTest: {
+    screen: require('./ProximityScreenOffTest').default,
     navigationOptions: {
-      title: 'SelectOrientation',
+      title: 'ProximityScreenOffTest',
     },
   },
 });

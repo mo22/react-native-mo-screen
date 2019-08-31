@@ -15,5 +15,5 @@ OrientationConsumer
 ```
 
 ## TODO
-- [ ] android does not trigger orientation change between landscape left and right
+- [ ] brightness?
 - [ ] inline docs

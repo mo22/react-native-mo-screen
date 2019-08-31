@@ -9,18 +9,18 @@ export default class Menu extends React.PureComponent<NavigationInjectedProps> {
       <ScrollView>
 
         <ListItem
-          title="LockedOrientation"
+          title="ScreenOnTest"
           chevron={true}
           onPress={() => {
-            this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'LockedOrientation' }));
+            this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'ScreenOnTest' }));
           }}
         />
 
         <ListItem
-          title="SelectOrientation"
+          title="ProximityScreenOffTest"
           chevron={true}
           onPress={() => {
-            this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'SelectOrientation' }));
+            this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'ProximityScreenOffTest' }));
           }}
         />
 
