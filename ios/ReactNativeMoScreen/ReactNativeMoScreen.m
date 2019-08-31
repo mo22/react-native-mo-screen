@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTEventEmitter.h>
+#import <React/RCTUIManager.h>
 
 @interface ReactNativeMoScreen : RCTEventEmitter
 @end

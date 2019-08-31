@@ -1,28 +1,15 @@
 import { EmitterSubscription } from 'react-native';
-export declare enum Orientation {
-    Portrait = 0,
-    LandscapeLeft = 1,
-    PortraitUpsideDown = 2,
-    LandscapeRight = 3
-}
-export declare enum RequestOrientation {
-    Landscape = 0,
-    Portrait = 1,
-    Sensor = 4,
-    SensorLandscape = 6,
-    SensorPortrait = 7,
-    ReverseLandscape = 8,
-    ReversePortrait = 9
-}
 export interface Module {
-    enableOrientationEvent(enable: boolean): void;
-    setRequestedOrientation(orientation: RequestOrientation): void;
-    getOrientation(): Promise<number>;
+    setKeepScreenOn(value: boolean): void;
+    setWindowFlags(flag: number, value: boolean): void;
+    setProximityScreenOff(value: boolean): void;
+    enableProximityMonitoring(enable: boolean): void;
 }
-export interface OrientationEvent {
-    orientation: number;
+export interface ProximityEvent {
+    proximity: boolean;
+    distance: number;
 }
 export declare const Module: Module | undefined;
 export declare const Events: {
-    addListener(eventType: "ReactNativeMoOrientation", listener: (event: OrientationEvent) => void): EmitterSubscription;
+    addListener(eventType: "ReactNativeMoScreenProximity", listener: (event: ProximityEvent) => void): EmitterSubscription;
 } | undefined;
