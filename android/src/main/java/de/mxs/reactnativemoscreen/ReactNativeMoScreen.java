@@ -116,7 +116,7 @@ public class ReactNativeMoScreen extends ReactContextBaseJavaModule {
 
     @SuppressWarnings("unused")
     @ReactMethod
-    public void setBrightness(final float value) {
+    public void setScreenBrightness(final float value) {
         final Activity activity = getCurrentActivity();
         if (activity == null) return;
         activity.runOnUiThread(() -> {

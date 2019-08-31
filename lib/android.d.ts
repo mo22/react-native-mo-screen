@@ -4,6 +4,7 @@ export interface Module {
     setWindowFlags(flag: number, value: boolean): void;
     setProximityScreenOff(value: boolean): void;
     enableProximityEvent(enable: boolean): void;
+    setScreenBrightness(value: number): void;
 }
 export interface ProximityEvent {
     proximity: boolean;
