@@ -8,6 +8,7 @@ export declare class Screen {
     private static proximityScreenOffCounter;
     private static proximityScreenOffSubscription?;
     static pushProximityScreenOff(): Releaseable;
+    static setScreenBrightness(value: number): void;
 }
 export declare class ScreenOnLock extends React.PureComponent<{}> {
     private lock?;

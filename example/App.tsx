@@ -12,13 +12,19 @@ const AppNavigator = createStackNavigator({
   ScreenOnTest: {
     screen: require('./ScreenOnTest').default,
     navigationOptions: {
-      title: 'ScreenOnTest',
+      title: 'Screen On Test',
     },
   },
   ProximityScreenOffTest: {
     screen: require('./ProximityScreenOffTest').default,
     navigationOptions: {
-      title: 'ProximityScreenOffTest',
+      title: 'Proximity Screen Off Test',
+    },
+  },
+  BrightnessTest: {
+    screen: require('./BrightnessTest').default,
+    navigationOptions: {
+      title: 'Brightness Test',
     },
   },
 });

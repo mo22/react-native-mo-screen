@@ -24,6 +24,14 @@ export default class Menu extends React.PureComponent<NavigationInjectedProps> {
           }}
         />
 
+        <ListItem
+          title="BrightnessTest"
+          chevron={true}
+          onPress={() => {
+            this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'BrightnessTest' }));
+          }}
+        />
+
       </ScrollView>
     );
   }

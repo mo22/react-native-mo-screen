@@ -91,6 +91,14 @@ export class Screen {
       },
     };
   }
+
+  public static setScreenBrightness(value: number) {
+    if (ios.Module) {
+      ios.Module.setScreenBrightness(value);
+    } else if (android.Module) {
+      android.Module.setScreenBrightness(value);
+    }
+  }
 }
 
 
