@@ -33,7 +33,7 @@ export declare class Screen {
  * will hold a screen on lock while mounted
  */
 export declare class ScreenOnLock extends React.PureComponent<{
-    children: never;
+    children?: never;
 }> {
     private lock?;
     componentDidMount(): void;
@@ -44,7 +44,7 @@ export declare class ScreenOnLock extends React.PureComponent<{
  * will hold a screen off on proximity lock while mounted
  */
 export declare class ProximityScreenOffLock extends React.PureComponent<{
-    children: never;
+    children?: never;
 }> {
     private lock?;
     componentDidMount(): void;

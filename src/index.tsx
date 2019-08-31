@@ -127,7 +127,7 @@ export class Screen {
 /**
  * will hold a screen on lock while mounted
  */
-export class ScreenOnLock extends React.PureComponent<{ children: never; }> {
+export class ScreenOnLock extends React.PureComponent<{ children?: never; }> {
   private lock?: Releaseable;
 
   public componentDidMount() {
@@ -151,7 +151,7 @@ export class ScreenOnLock extends React.PureComponent<{ children: never; }> {
 /**
  * will hold a screen off on proximity lock while mounted
  */
-export class ProximityScreenOffLock extends React.PureComponent<{ children: never; }> {
+export class ProximityScreenOffLock extends React.PureComponent<{ children?: never; }> {
   private lock?: Releaseable;
 
   public componentDidMount() {
