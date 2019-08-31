@@ -15,5 +15,7 @@ OrientationConsumer
 ```
 
 ## TODO
-- [ ] brightness?
+- [ ] setScreenBrightness?
+- [ ] setWindowFlags?
+
 - [ ] inline docs

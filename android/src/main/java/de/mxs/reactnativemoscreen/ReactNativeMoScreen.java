@@ -113,4 +113,17 @@ public class ReactNativeMoScreen extends ReactContextBaseJavaModule {
             }
         });
     }
+
+    @SuppressWarnings("unused")
+    @ReactMethod
+    public void setBrightness(final float value) {
+        final Activity activity = getCurrentActivity();
+        if (activity == null) return;
+        activity.runOnUiThread(() -> {
+            WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+            lp.screenBrightness = value;
+            activity.getWindow().setAttributes(lp);
+        });
+    }
+
 }
