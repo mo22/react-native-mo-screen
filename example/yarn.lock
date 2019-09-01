@@ -5344,10 +5344,10 @@ react-native-gesture-handler@^1.4.1:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-react-native-mo-screen@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-mo-screen/-/react-native-mo-screen-0.1.1.tgz#7256fbd73b8bb8c7bdff2d9424ade710a4c4472c"
-  integrity sha512-ePJowB1IyXJgXhcS2zz9Xi+a5sT/8O3d9KAhHgZkiK9PJ7riMG28c6jfa5ZE8Llw9PVRAS3TGMiKuYP8BvwNLw==
+react-native-mo-screen@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-mo-screen/-/react-native-mo-screen-0.1.2.tgz#63a02ccba774f17b104ca5ef89fbc04201fe0267"
+  integrity sha512-oh468aYUpPz55b79cT9z61MdH9t9F8z0V6Hv84O7/XiSDaTZyWs3t5xQJbqKzE4EwPX9Q1q6XA0Gis3qlDerxA==
   dependencies:
     mo-core "^0.1.1"
 
