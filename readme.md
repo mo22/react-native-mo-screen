@@ -1,21 +1,27 @@
 # react-native-mo-screen
 
-TODO
+Provides screen-on, proximity and brightness support
 
 ## Usage
 
 ```ts
-import { Orientation } from 'react-native-mo-orientation';
+import { Screen, ProximityScreenOffLock, ScreenOnLock } from 'react-native-mo-screen';
 
-Orientation.xxxx
+const lock = Screen.pushScreenOn();
+// do something
+lock.release();
 
-withOrientation
+const lock = Screen.pushProximityScreenOff();
+// do something
+lock.release();
 
-OrientationConsumer
+Screen.setScreenBrightness(0.5);
+
+return (
+  <View>
+    <ScreenOnLock />
+    <ProximityScreenOffLock />
+  </View>
+)
+
 ```
-
-## TODO
-- [ ] setScreenBrightness?
-- [ ] setWindowFlags?
-
-- [ ] inline docs
