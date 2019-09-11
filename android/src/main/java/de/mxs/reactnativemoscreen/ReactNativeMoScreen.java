@@ -8,6 +8,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.PowerManager;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.facebook.react.bridge.Arguments;
@@ -36,6 +37,8 @@ public class ReactNativeMoScreen extends ReactContextBaseJavaModule {
 
     private PowerManager.WakeLock proximityScreenOffLock;
 
+    private boolean verbose = false;
+
     ReactNativeMoScreen(@Nonnull ReactApplicationContext reactContext) {
         super(reactContext);
     }
@@ -52,9 +55,16 @@ public class ReactNativeMoScreen extends ReactContextBaseJavaModule {
         super.onCatalystInstanceDestroy();
     }
 
+    @SuppressWarnings("unused")
+    @ReactMethod
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
+    }
+
     @SuppressWarnings({"WeakerAccess"})
     @ReactMethod
     public void enableProximityEvent(boolean enable) {
+        if (verbose) Log.i("ReactNativeMoScreen", "enableProximityEvent " + enable);
         SensorManager sensorManager = (SensorManager)getReactApplicationContext().getSystemService(Context.SENSOR_SERVICE);
         if (sensorManager == null) throw new RuntimeException("sensorManager null");
         sensorManager.unregisterListener(proximityListener);
@@ -67,6 +77,7 @@ public class ReactNativeMoScreen extends ReactContextBaseJavaModule {
     @SuppressWarnings("unused")
     @ReactMethod
     public void setProximityScreenOff(boolean value) {
+        if (verbose) Log.i("ReactNativeMoScreen", "setProximityScreenOff " + value);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             PowerManager powerManager = (PowerManager) getReactApplicationContext().getSystemService(Context.POWER_SERVICE);
             if (powerManager == null) throw new RuntimeException("powerManager null");
@@ -89,6 +100,7 @@ public class ReactNativeMoScreen extends ReactContextBaseJavaModule {
     @SuppressWarnings("unused")
     @ReactMethod
     public void setKeepScreenOn(final boolean value) {
+        if (verbose) Log.i("ReactNativeMoScreen", "setKeepScreenOn " + value);
         final Activity activity = getCurrentActivity();
         if (activity == null) return;
         activity.runOnUiThread(() -> {
@@ -103,6 +115,7 @@ public class ReactNativeMoScreen extends ReactContextBaseJavaModule {
     @SuppressWarnings("unused")
     @ReactMethod
     public void setWindowFlags(final int flag, final boolean value) {
+        if (verbose) Log.i("ReactNativeMoScreen", "setWindowFlags " + flag + " "  + value);
         final Activity activity = getCurrentActivity();
         if (activity == null) return;
         activity.runOnUiThread(() -> {
@@ -117,6 +130,7 @@ public class ReactNativeMoScreen extends ReactContextBaseJavaModule {
     @SuppressWarnings("unused")
     @ReactMethod
     public void setScreenBrightness(final float value) {
+        if (verbose) Log.i("ReactNativeMoScreen", "setScreenBrightness " + value);
         final Activity activity = getCurrentActivity();
         if (activity == null) return;
         activity.runOnUiThread(() -> {
