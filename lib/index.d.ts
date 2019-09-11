@@ -1,6 +1,20 @@
 import * as React from 'react';
 import { StatefulEvent, Releaseable } from 'mo-core';
+import * as ios from './ios';
+import * as android from './android';
 export declare class Screen {
+    /**
+     * native ios functions. use with caution
+     */
+    static readonly ios: typeof ios;
+    /**
+     * native android functions. use with caution
+     */
+    static readonly android: typeof android;
+    /**
+     * be verbose
+     */
+    static setVerbose(verbose: boolean): void;
     /**
      * proximity subscription. subscribe to get feedback calls about the state of
      * the proximity sensor.

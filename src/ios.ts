@@ -5,6 +5,7 @@ export interface ProximityEvent {
 }
 
 export interface Module {
+  setVerbose(verbose: boolean): void;
   setIdleTimerDisabled(value: boolean): void;
   setScreenBrightness(value: number): void;
   enableProximityMonitoring(enable: boolean): void;

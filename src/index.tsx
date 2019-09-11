@@ -7,6 +7,27 @@ import * as android from './android';
 
 export class Screen {
   /**
+   * native ios functions. use with caution
+   */
+  public static readonly ios = ios;
+
+  /**
+   * native android functions. use with caution
+   */
+  public static readonly android = android;
+
+  /**
+   * be verbose
+   */
+  public static setVerbose(verbose: boolean) {
+    if (ios.Module) {
+      ios.Module.setVerbose(verbose);
+    } else if (android.Module) {
+      android.Module.setVerbose(verbose);
+    }
+  }
+
+  /**
    * proximity subscription. subscribe to get feedback calls about the state of
    * the proximity sensor.
    * please note that on IOS this will also darken the screen on proximity.

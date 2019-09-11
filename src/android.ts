@@ -1,6 +1,7 @@
 import { NativeModules, NativeEventEmitter, EmitterSubscription, Platform } from 'react-native';
 
 export interface Module {
+  setVerbose(verbose: boolean): void;
   setKeepScreenOn(value: boolean): void;
   setWindowFlags(flag: number, value: boolean): void;
   setProximityScreenOff(value: boolean): void;
