@@ -11,6 +11,7 @@
 
 RCT_EXPORT_MODULE()
 
+// we are interacting with UI
 - (dispatch_queue_t)methodQueue {
     return dispatch_get_main_queue();
 }
