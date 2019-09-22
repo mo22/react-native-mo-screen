@@ -206,11 +206,11 @@ export class ProximityScreenOffLock extends React.PureComponent<{ children?: nev
 
   public componentDidUpdate() {
     console.log('ProximityScreenOffLock componentDidUpdate');
-    // if (this.lock) {
-    //   this.lock.release();
-    //   this.lock = undefined;
-    // }
-    // this.lock = Screen.pushProximityScreenOff(this.props.background || false);
+    if (this.lock) {
+      this.lock.release();
+      this.lock = undefined;
+    }
+    this.lock = Screen.pushProximityScreenOff(this.props.background || false);
   }
 
   public componentWillUnmount() {
