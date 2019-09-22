@@ -3,6 +3,7 @@
 Provides screen-on, proximity and brightness support
 
 ## Installation
+
 Install just like your ordinary react-native module.
 
 ## Usage
@@ -30,3 +31,6 @@ return (
 )
 
 ```
+
+## TODO
+- keep screen on only while in foreground?
