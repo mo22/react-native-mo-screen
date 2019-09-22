@@ -30,7 +30,6 @@ export default class ProximityScreenOffTest extends React.PureComponent<Navigati
   }
 
   public render() {
-    console.log('render');
     return (
       <React.Fragment>
         <ProximityScreenOffLock background={this.state.background} />
