@@ -5,7 +5,7 @@ import { ListItem } from 'react-native-elements';
 import { ProximityScreenOffLock, Screen } from 'react-native-mo-screen';
 import { Releaseable } from 'mo-core';
 
-export default class ProximityScreenOffTest extends React.PureComponent<NavigationInjectedProps, { log: string[] }> {
+export default class ProximityScreenOffTest extends React.PureComponent<NavigationInjectedProps, { log: string[]; background: boolean; }> {
   public state: { log: string[]; background: boolean; } = {
     log: [],
     background: false,
@@ -40,6 +40,15 @@ export default class ProximityScreenOffTest extends React.PureComponent<Navigati
           title="Your Screen should turn off on proximity"
         />
 
+        <ListItem
+          title="background"
+          switch={{
+            value: this.state.background || false,
+            onValueChange: (value) => {
+              this.setState({ background: value });
+            },
+          }}
+        />
         {this.state.log.map((line, idx) => (
           <ListItem
             key={idx}
