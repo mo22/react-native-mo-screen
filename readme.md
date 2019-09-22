@@ -2,7 +2,12 @@
 
 Provides screen-on, proximity and brightness support
 
+## Installation
+Install just like your ordinary react-native module.
+
 ## Usage
+
+Please check the [example/](example/) code.
 
 ```ts
 import { Screen, ProximityScreenOffLock, ScreenOnLock } from 'react-native-mo-screen';
