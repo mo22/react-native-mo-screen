@@ -24,18 +24,22 @@ RCT_EXPORT_METHOD(setVerbose:(BOOL)verbose) {
     _verbose = verbose;
 }
 
+- (BOOL)verbose {
+    return _verbose;
+}
+
 RCT_EXPORT_METHOD(setIdleTimerDisabled:(BOOL)value) {
-    if (_verbose) NSLog(@"ReactNativeMoScreen.setIdleTimerDisabled %d", value);
+    if (self.verbose) NSLog(@"ReactNativeMoScreen.setIdleTimerDisabled %d", value);
     [RCTSharedApplication() setIdleTimerDisabled:value];
 }
 
 RCT_EXPORT_METHOD(setScreenBrightness:(CGFloat)value) {
-    if (_verbose) NSLog(@"ReactNativeMoScreen.setScreenBrightness %f", value);
+    if (self.verbose) NSLog(@"ReactNativeMoScreen.setScreenBrightness %f", value);
     [[UIScreen mainScreen] setBrightness:value];
 }
 
 RCT_EXPORT_METHOD(enableProximityMonitoring:(BOOL)enable) {
-    if (_verbose) NSLog(@"ReactNativeMoScreen.enableProximityMonitoring %d", enable);
+    if (self.verbose) NSLog(@"ReactNativeMoScreen.enableProximityMonitoring %d", enable);
     if (enable) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(proximityChanged:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
         [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
@@ -50,7 +54,7 @@ RCT_EXPORT_METHOD(enableProximityMonitoring:(BOOL)enable) {
 }
 
 - (void)proximityChanged:(NSNotificationCenter *)notification {
-    if (_verbose) NSLog(@"ReactNativeMoScreen.proximityChanged %d", [[UIDevice currentDevice] proximityState]);
+    if (self.verbose) NSLog(@"ReactNativeMoScreen.proximityChanged %d", [[UIDevice currentDevice] proximityState]);
     [self sendEventWithName:@"ReactNativeMoScreenProximity" body:@{
         @"proximity": @([[UIDevice currentDevice] proximityState]),
     }];

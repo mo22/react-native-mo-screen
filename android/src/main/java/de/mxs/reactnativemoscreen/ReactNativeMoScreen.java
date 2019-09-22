@@ -57,8 +57,8 @@ public class ReactNativeMoScreen extends ReactContextBaseJavaModule {
 
     @SuppressWarnings("unused")
     @ReactMethod
-    public void setVerbose(boolean verbose) {
-        this.verbose = verbose;
+    public void setVerbose(boolean value) {
+        verbose = value;
     }
 
     @SuppressWarnings({"WeakerAccess"})
