@@ -6,8 +6,9 @@ import { ProximityScreenOffLock, Screen } from 'react-native-mo-screen';
 import { Releaseable } from 'mo-core';
 
 export default class ProximityScreenOffTest extends React.PureComponent<NavigationInjectedProps, { log: string[] }> {
-  public state: { log: string[] } = {
+  public state: { log: string[]; background: boolean; } = {
     log: [],
+    background: false,
   };
 
   private sub?: Releaseable;
@@ -32,7 +33,7 @@ export default class ProximityScreenOffTest extends React.PureComponent<Navigati
     console.log('render');
     return (
       <React.Fragment>
-        <ProximityScreenOffLock />
+        <ProximityScreenOffLock background={this.state.background} />
         <ScrollView>
 
         <ListItem

@@ -32,12 +32,18 @@ export declare class Screen {
      */
     static runWithScreenOn<T>(callback: () => Promise<T>): Promise<T>;
     private static proximityScreenOffCounter;
+    private static proximityScreenOffBackground;
     private static proximityScreenOffSubscription?;
+    private static setProximityScreenOff;
+    private static appStateListener;
+    private static updateProximityScreenOff;
     /**
      * obtain proximity screen off lock. while this is held, the screen will go
      * dark on proximity. call result.release() to release lock.
+     * is background is true the screen will also be turned off on proximity if
+     * the app is not in foreground any more.
      */
-    static pushProximityScreenOff(): Releaseable;
+    static pushProximityScreenOff(background?: boolean): Releaseable;
     /**
      * set screen brightness to value between 0 and 1.
      */
@@ -59,9 +65,11 @@ export declare class ScreenOnLock extends React.PureComponent<{
  */
 export declare class ProximityScreenOffLock extends React.PureComponent<{
     children?: never;
+    background?: boolean;
 }> {
     private lock?;
     componentDidMount(): void;
+    componentDidUpdate(): void;
     componentWillUnmount(): void;
     render(): null;
 }

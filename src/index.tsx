@@ -2,6 +2,7 @@ import * as React from 'react';
 import { StatefulEvent, Releaseable } from 'mo-core';
 import * as ios from './ios';
 import * as android from './android';
+import { AppState, AppStateStatus } from 'react-native';
 
 
 
@@ -99,34 +100,58 @@ export class Screen {
   }
 
   private static proximityScreenOffCounter = 0;
+  private static proximityScreenOffBackground = 0;
   private static proximityScreenOffSubscription?: Releaseable;
+
+  private static setProximityScreenOff(enabled: boolean) {
+    if (enabled) {
+      if (ios.Module) {
+        if (!this.proximityScreenOffSubscription) {
+          this.proximityScreenOffSubscription = this.proximity.subscribe(() => {});
+        }
+      } else if (android.Module) {
+        android.Module.setProximityScreenOff(true);
+      }
+    } else {
+      if (ios.Module) {
+        if (this.proximityScreenOffSubscription) {
+          this.proximityScreenOffSubscription.release();
+          this.proximityScreenOffSubscription = undefined;
+        }
+      } else if (android.Module) {
+        android.Module.setProximityScreenOff(false);
+      }
+    }
+  }
+
+  private static appStateListener = (state: AppStateStatus) => {
+    if (state === 'background') {
+      Screen.setProximityScreenOff(Screen.proximityScreenOffBackground > 0);
+    } else {
+      Screen.setProximityScreenOff(Screen.proximityScreenOffCounter > 0);
+    }
+  }
+
+  private static updateProximityScreenOff() {
+    this.setProximityScreenOff(this.proximityScreenOffCounter > 0);
+    AppState.addEventListener('change', this.appStateListener);
+  }
 
   /**
    * obtain proximity screen off lock. while this is held, the screen will go
    * dark on proximity. call result.release() to release lock.
+   * is background is true the screen will also be turned off on proximity if
+   * the app is not in foreground any more.
    */
-  public static pushProximityScreenOff(): Releaseable {
-    if (this.proximityScreenOffCounter === 0) {
-      if (ios.Module) {
-        this.proximityScreenOffSubscription = this.proximity.subscribe(() => {});
-      } else if (android.Module) {
-        android.Module.setProximityScreenOff(true);
-      }
-    }
+  public static pushProximityScreenOff(background = false): Releaseable {
     this.proximityScreenOffCounter++;
+    if (background) this.proximityScreenOffBackground++;
+    this.updateProximityScreenOff();
     return {
       release: () => {
         this.proximityScreenOffCounter--;
-        if (this.proximityScreenOffCounter === 0) {
-          if (ios.Module) {
-            if (this.proximityScreenOffSubscription) {
-              this.proximityScreenOffSubscription.release();
-              this.proximityScreenOffSubscription = undefined;
-            }
-          } else if (android.Module) {
-            android.Module.setProximityScreenOff(false);
-          }
-        }
+        if (background) this.proximityScreenOffBackground--;
+        this.updateProximityScreenOff();
       },
     };
   }
@@ -172,11 +197,15 @@ export class ScreenOnLock extends React.PureComponent<{ children?: never; }> {
 /**
  * will hold a screen off on proximity lock while mounted
  */
-export class ProximityScreenOffLock extends React.PureComponent<{ children?: never; }> {
+export class ProximityScreenOffLock extends React.PureComponent<{ children?: never; background?: boolean; }> {
   private lock?: Releaseable;
 
   public componentDidMount() {
-    this.lock = Screen.pushProximityScreenOff();
+    this.lock = Screen.pushProximityScreenOff(this.props.background || false);
+  }
+
+  public componentDidUpdate() {
+    console.log('ProximityScreenOffLock componentDidUpdate');
   }
 
   public componentWillUnmount() {
