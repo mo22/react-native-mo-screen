@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -137,6 +138,17 @@ public class ReactNativeMoScreen extends ReactContextBaseJavaModule {
             WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
             lp.screenBrightness = value;
             activity.getWindow().setAttributes(lp);
+        });
+    }
+
+    @SuppressWarnings("unused")
+    @ReactMethod
+    public void getScreenBrightness(final Promise promise) {
+        final Activity activity = getCurrentActivity();
+        if (activity == null) return;
+        activity.runOnUiThread(() -> {
+            WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+            promise.resolve(lp.screenBrightness);
         });
     }
 
