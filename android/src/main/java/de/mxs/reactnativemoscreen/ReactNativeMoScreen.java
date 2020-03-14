@@ -152,4 +152,10 @@ public class ReactNativeMoScreen extends ReactContextBaseJavaModule {
         });
     }
 
+    @SuppressWarnings({"WeakerAccess"})
+    @ReactMethod
+    public void enableScreenBrightnessEvent(boolean enable) {
+        if (verbose) Log.i("ReactNativeMoScreen", "enableScreenBrightnessEvent " + enable);
+    }
+
 }
