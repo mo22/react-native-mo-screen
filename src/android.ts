@@ -17,7 +17,7 @@ export interface Module {
   enableProximityEvent(enable: boolean): void;
   setScreenBrightness(value: number): void;
   getScreenBrightness(): Promise<number>;
-  enableScreenBrightnessMonitoring(enable: boolean): void;
+  enableScreenBrightnessEvent(enable: boolean): void;
 }
 
 export const Module = (Platform.OS === 'android') ? NativeModules.ReactNativeMoScreen as Module : undefined;

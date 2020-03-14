@@ -14,7 +14,7 @@ export interface Module {
     enableProximityEvent(enable: boolean): void;
     setScreenBrightness(value: number): void;
     getScreenBrightness(): Promise<number>;
-    enableScreenBrightnessMonitoring(enable: boolean): void;
+    enableScreenBrightnessEvent(enable: boolean): void;
 }
 export declare const Module: Module | undefined;
 export declare const Events: {

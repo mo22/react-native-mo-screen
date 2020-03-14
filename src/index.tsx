@@ -73,13 +73,13 @@ export class Screen {
         ios.Module!.enableScreenBrightnessMonitoring(false);
       };
     } else if (android.Events) {
-      android.Module!.enableScreenBrightnessMonitoring(true);
+      android.Module!.enableScreenBrightnessEvent(true);
       const sub = android.Events.addListener('ReactNativeMoScreenBrightness', (rs) => {
         emit(rs.screenBrightness);
       });
       return () => {
         sub.remove();
-        android.Module!.enableScreenBrightnessMonitoring(false);
+        android.Module!.enableScreenBrightnessEvent(false);
       };
     } else {
       return () => {
