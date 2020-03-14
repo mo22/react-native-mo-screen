@@ -58,6 +58,35 @@ export class Screen {
     }
   });
 
+  /**
+   * screen brightness subscription. subscribe to get calls if screen brightness
+   * has changed.
+   */
+  public static readonly screenBrightness = new StatefulEvent<number>(0, (emit) => {
+    if (ios.Events) {
+      ios.Module!.enableScreenBrightnessMonitoring(true);
+      const sub = ios.Events.addListener('ReactNativeMoScreenBrightness', (rs) => {
+        emit(rs.screeBrightness);
+      });
+      return () => {
+        sub.remove();
+        ios.Module!.enableScreenBrightnessMonitoring(false);
+      };
+    // } else if (android.Events) {
+      // android.Module!.enableProximityEvent(true);
+      // const sub = android.Events.addListener('ReactNativeMoScreenProximity', (rs) => {
+      //   emit(rs.proximity);
+      // });
+      // return () => {
+      //   sub.remove();
+      //   android.Module!.enableProximityEvent(false);
+      // };
+    } else {
+      return () => {
+      };
+    }
+  });
+
   private static screenOnCounter = 0;
 
   /**
@@ -164,6 +193,19 @@ export class Screen {
       ios.Module.setScreenBrightness(value);
     } else if (android.Module) {
       android.Module.setScreenBrightness(value);
+    }
+  }
+
+  /**
+   * get screen brightness as value between 0 and 1.
+   */
+  public static async getScreenBrightness(): Promise<number> {
+    if (ios.Module) {
+      return await ios.Module.getScreenBrightness();
+    } else if (android.Module) {
+      return 1;
+    } else {
+      return 1;
     }
   }
 }

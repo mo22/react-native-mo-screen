@@ -21,6 +21,11 @@ export declare class Screen {
      * please note that on IOS this will also darken the screen on proximity.
      */
     static readonly proximity: StatefulEvent<boolean>;
+    /**
+     * screen brightness subscription. subscribe to get calls if screen brightness
+     * has changed.
+     */
+    static readonly screenBrightness: StatefulEvent<number>;
     private static screenOnCounter;
     /**
      * start screen on lock. the screen wont get dark after idle time.
@@ -48,6 +53,10 @@ export declare class Screen {
      * set screen brightness to value between 0 and 1.
      */
     static setScreenBrightness(value: number): void;
+    /**
+     * get screen brightness as value between 0 and 1.
+     */
+    static getScreenBrightness(): Promise<number>;
 }
 /**
  * will hold a screen on lock while mounted
