@@ -21,8 +21,11 @@ export default class BrightnessTest extends React.PureComponent<NavigationInject
       this.state.log.push('screenBrightness is ' + screenBrightness + ' at ' + new Date());
       this.forceUpdate();
     });
-    const screenBrightness = await Screen.getScreenBrightness();
-    console.log('initial', screenBrightness);
+    {
+      const screenBrightness = await Screen.getScreenBrightness();
+      this.state.log.push('initial screenBrightness is ' + screenBrightness + ' at ' + new Date());
+      this.forceUpdate();
+    }
   }
 
   public componentWillUnmount() {

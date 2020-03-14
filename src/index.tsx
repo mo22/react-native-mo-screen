@@ -66,7 +66,7 @@ export class Screen {
     if (ios.Events) {
       ios.Module!.enableScreenBrightnessMonitoring(true);
       const sub = ios.Events.addListener('ReactNativeMoScreenBrightness', (rs) => {
-        emit(rs.screeBrightness);
+        emit(rs.screenBrightness);
       });
       return () => {
         sub.remove();

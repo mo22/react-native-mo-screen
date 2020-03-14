@@ -3,7 +3,7 @@ export interface ProximityEvent {
     proximity: boolean;
 }
 export interface ScreenBrightnessEvent {
-    screeBrightness: number;
+    screenBrightness: number;
 }
 export interface Module {
     setVerbose(verbose: boolean): void;

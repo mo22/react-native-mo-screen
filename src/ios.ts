@@ -5,7 +5,7 @@ export interface ProximityEvent {
 }
 
 export interface ScreenBrightnessEvent {
-  screeBrightness: number;
+  screenBrightness: number;
 }
 
 export interface Module {
