@@ -72,15 +72,15 @@ export class Screen {
         sub.remove();
         ios.Module!.enableScreenBrightnessMonitoring(false);
       };
-    // } else if (android.Events) {
-      // android.Module!.enableProximityEvent(true);
-      // const sub = android.Events.addListener('ReactNativeMoScreenProximity', (rs) => {
-      //   emit(rs.proximity);
-      // });
-      // return () => {
-      //   sub.remove();
-      //   android.Module!.enableProximityEvent(false);
-      // };
+    } else if (android.Events) {
+      android.Module!.enableScreenBrightnessMonitoring(true);
+      const sub = android.Events.addListener('ReactNativeMoScreenBrightness', (rs) => {
+        emit(rs.screenBrightness);
+      });
+      return () => {
+        sub.remove();
+        android.Module!.enableScreenBrightnessMonitoring(false);
+      };
     } else {
       return () => {
       };
@@ -203,7 +203,7 @@ export class Screen {
     if (ios.Module) {
       return await ios.Module.getScreenBrightness();
     } else if (android.Module) {
-      return 1;
+      return await android.Module.getScreenBrightness();
     } else {
       return 1;
     }
