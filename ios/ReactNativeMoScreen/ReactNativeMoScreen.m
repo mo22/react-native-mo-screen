@@ -61,7 +61,7 @@ RCT_EXPORT_METHOD(enableProximityMonitoring:(BOOL)enable) {
 }
 
 RCT_EXPORT_METHOD(enableScreenBrightnessMonitoring:(BOOL)enable) {
-    if (1 || self.verbose) NSLog(@"ReactNativeMoScreen.enableScreenBrightnessMonitoring %d", enable);
+    if (self.verbose) NSLog(@"ReactNativeMoScreen.enableScreenBrightnessMonitoring %d", enable);
     if (enable) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(screenBrightnessChanged:) name:UIScreenBrightnessDidChangeNotification object:nil];
     } else {
@@ -70,7 +70,7 @@ RCT_EXPORT_METHOD(enableScreenBrightnessMonitoring:(BOOL)enable) {
 }
 
 - (void)screenBrightnessChanged:(NSNotification*)notification {
-    if (1 || self.verbose) NSLog(@"ReactNativeMoScreen.screenBrightnessChanged %f", [[UIScreen mainScreen] brightness]);
+    if (self.verbose) NSLog(@"ReactNativeMoScreen.screenBrightnessChanged %f", [[UIScreen mainScreen] brightness]);
     [self sendEventWithName:@"ReactNativeMoScreenBrightness" body:@{
         @"screenBrightness": @([[UIScreen mainScreen] brightness]),
     }];
