@@ -203,7 +203,7 @@ export class Screen {
     if (ios.Module) {
       return await ios.Module.getScreenBrightness();
     } else if (android.Module) {
-      return await android.Module.getScreenBrightness();
+      return (await android.Module.getScreenBrightness()).screenBrightness;
     } else {
       return 1;
     }

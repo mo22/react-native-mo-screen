@@ -1,13 +1,17 @@
 package de.mxs.reactnativemoscreen;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.ContentObserver;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
+import android.os.Handler;
 import android.os.PowerManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.WindowManager;
 
@@ -136,7 +140,7 @@ public class ReactNativeMoScreen extends ReactContextBaseJavaModule {
         if (activity == null) return;
         activity.runOnUiThread(() -> {
             WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
-            lp.screenBrightness = value;
+            lp.screenBrightness = value; // this overrides ...
             activity.getWindow().setAttributes(lp);
         });
     }
@@ -144,18 +148,53 @@ public class ReactNativeMoScreen extends ReactContextBaseJavaModule {
     @SuppressWarnings("unused")
     @ReactMethod
     public void getScreenBrightness(final Promise promise) {
-        final Activity activity = getCurrentActivity();
-        if (activity == null) return;
-        activity.runOnUiThread(() -> {
-            WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
-            promise.resolve(lp.screenBrightness);
-        });
+        try {
+            int value = Settings.System.getInt(getReactApplicationContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+            int mode = Settings.System.getInt(getReactApplicationContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE);
+            WritableMap args = Arguments.createMap();
+            args.putDouble("screenBrightness", (float)value / 255);
+            args.putString("mode", mode == Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL ? "manual" : "automatic");
+            promise.resolve(args);
+        } catch (Settings.SettingNotFoundException e) {
+            promise.reject(e);
+        }
     }
 
-    @SuppressWarnings({"WeakerAccess"})
+    private ContentObserver screenBrightnessObserver = null;
+
+    @SuppressWarnings("unused")
     @ReactMethod
     public void enableScreenBrightnessEvent(boolean enable) {
         if (verbose) Log.i("ReactNativeMoScreen", "enableScreenBrightnessEvent " + enable);
+        ContentResolver contentResolver = getReactApplicationContext().getContentResolver();
+        if (enable) {
+            if (screenBrightnessObserver == null) {
+                screenBrightnessObserver = new ContentObserver(new Handler()) {
+                    @Override
+                    public void onChange(boolean selfChange) {
+                        try {
+                            int value = Settings.System.getInt(getReactApplicationContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+                            int mode = Settings.System.getInt(getReactApplicationContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE);
+                            WritableMap args = Arguments.createMap();
+                            args.putDouble("screenBrightness", (float)value / 255);
+                            args.putString("mode", mode == Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL ? "manual" : "automatic");
+                            getReactApplicationContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("ReactNativeMoScreenProximity", args);
+                        } catch (Settings.SettingNotFoundException ignored) {
+                        }
+                    }
+                };
+                contentResolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS),
+                    true,
+                    screenBrightnessObserver
+                );
+            }
+        } else {
+            if (screenBrightnessObserver != null) {
+                contentResolver.unregisterContentObserver(screenBrightnessObserver);
+                screenBrightnessObserver = null;
+            }
+        }
     }
 
 }

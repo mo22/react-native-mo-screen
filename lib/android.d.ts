@@ -5,6 +5,7 @@ export interface ProximityEvent {
 }
 export interface ScreenBrightnessEvent {
     screenBrightness: number;
+    mode: 'automatic' | 'manual';
 }
 export interface Module {
     setVerbose(verbose: boolean): void;
@@ -13,7 +14,7 @@ export interface Module {
     setProximityScreenOff(value: boolean): void;
     enableProximityEvent(enable: boolean): void;
     setScreenBrightness(value: number): void;
-    getScreenBrightness(): Promise<number>;
+    getScreenBrightness(): Promise<ScreenBrightnessEvent>;
     enableScreenBrightnessEvent(enable: boolean): void;
 }
 export declare const Module: Module | undefined;
