@@ -178,8 +178,9 @@ public class ReactNativeMoScreen extends ReactContextBaseJavaModule {
                             WritableMap args = Arguments.createMap();
                             args.putDouble("screenBrightness", (float)value / 255);
                             args.putString("mode", mode == Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL ? "manual" : "automatic");
-                            getReactApplicationContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("ReactNativeMoScreenProximity", args);
-                        } catch (Settings.SettingNotFoundException ignored) {
+                            getReactApplicationContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("ReactNativeMoScreenBrightness", args);
+                        } catch (Settings.SettingNotFoundException e) {
+                            e.printStackTrace();
                         }
                     }
                 };
