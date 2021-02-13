@@ -15,6 +15,6 @@ export interface Module {
 }
 export declare const Module: Module | undefined;
 export declare const Events: {
-    addListener(eventType: "ReactNativeMoScreenProximity", listener: (event: ProximityEvent) => void): EmitterSubscription;
-    addListener(eventType: "ReactNativeMoScreenBrightness", listener: (event: ScreenBrightnessEvent) => void): EmitterSubscription;
+    addListener(eventType: 'ReactNativeMoScreenProximity', listener: (event: ProximityEvent) => void): EmitterSubscription;
+    addListener(eventType: 'ReactNativeMoScreenBrightness', listener: (event: ScreenBrightnessEvent) => void): EmitterSubscription;
 } | undefined;
